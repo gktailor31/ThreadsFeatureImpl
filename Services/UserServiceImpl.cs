@@ -2,6 +2,7 @@
 using ThreadsFeature.IRepository;
 using ThreadsFeature.IServices;
 using ThreadsFeature.Models;
+using ThreadsFeature.utils;
 
 namespace ThreadsFeature.Services
 {
@@ -10,12 +11,14 @@ namespace ThreadsFeature.Services
         private readonly ILogger<ThreadServicesImpl> _logger;
         private readonly CommentRepository _commentRepository;
         private readonly UserRepository _userRepository;
+        private readonly HelperService _helperService;
 
-        public UserServiceImpl(ILogger<ThreadServicesImpl> logger, CommentRepository commentRepository, UserRepository userRepository)
+        public UserServiceImpl(ILogger<ThreadServicesImpl> logger, CommentRepository commentRepository, UserRepository userRepository, HelperService helperService)
         {
             _logger = logger;
             _commentRepository = commentRepository;
             _userRepository = userRepository;
+            _helperService = helperService;
         }
         public User CreateUser(UserDTO userDTO)
         {
@@ -47,14 +50,14 @@ namespace ThreadsFeature.Services
             }
         }
 
-        public List<Comment> GetAllReplies(string userId)
+        public List<CommentResponseDTO> GetAllReplies(string userId)
         {
             try
             {
-                List<Comment> replies = new List<Comment> ();
+                List<CommentResponseDTO> replies = new List<CommentResponseDTO> ();
                 foreach(Comment comment in _userRepository.GetUserById(userId).Comments)
                 {
-                    if (comment.Parent != null) replies.Add(comment);
+                    if (comment.Parent != null) replies.Add(_helperService.ConvertCommentToCommentResponse(comment));
                 }
                 return replies;
             }
@@ -64,14 +67,14 @@ namespace ThreadsFeature.Services
             }
         }
 
-        public List<Comment> GetAllTweets(string userId)
+        public List<CommentResponseDTO> GetAllTweets(string userId)
         {
             try
             {
-                List<Comment> replies = new List<Comment>();
+                List<CommentResponseDTO> replies = new List<CommentResponseDTO>();
                 foreach (Comment comment in _userRepository.GetUserById(userId).Comments)
                 {
-                    if (comment.Parent == null) replies.Add(comment);
+                    if (comment.Parent == null) replies.Add(_helperService.ConvertCommentToCommentResponse(comment));
                 }
                 return replies;
             }

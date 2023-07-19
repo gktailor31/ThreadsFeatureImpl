@@ -46,13 +46,13 @@ namespace ThreadsFeature.Controllers
         }
 
         [HttpGet("{userId}/tweets")]
-        public ActionResult<List<Comment>> GetAllTweets(string userId)
+        public ActionResult<List<CommentResponseDTO>> GetAllTweets(string userId)
         {
             return Ok(_userService.GetAllTweets(userId));
         }
 
         [HttpGet("{userId}/replies")]
-        public ActionResult<List<Comment>> GetAllReplies(string userId)
+        public ActionResult<List<CommentResponseDTO>> GetAllReplies(string userId)
         {
             return Ok(_userService.GetAllReplies(userId));
         }

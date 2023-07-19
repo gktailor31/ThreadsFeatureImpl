@@ -9,8 +9,8 @@ namespace ThreadsFeature.IServices
         public User UpdateUser(UserDTO user, string id);
         public User DeleteUser(string id);
         public User GetUser(string id);
-        public List<Comment> GetAllTweets(string userId);
-        public List<Comment> GetAllReplies(string userId);
+        public List<CommentResponseDTO> GetAllTweets(string userId);
+        public List<CommentResponseDTO> GetAllReplies(string userId);
 
     }
 }
